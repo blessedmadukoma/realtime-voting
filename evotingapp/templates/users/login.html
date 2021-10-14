@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{% if error_message %}
+<p class="alert alert-danger">
+  <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+
+<h3>Sign In To Vote:</h3>
+<form action="{% url 'users:login' %}" method="POST">
+  {%csrf_token%}
+  <div class="form-group">
+    <label>Username:</label>
+    <input type="text" name="username" class="form-control">
+  </div>
+  <div class="form-group">
+    <label>Password:</label>
+    <input type="password" name="password" class="form-control">
+  </div>
+  <input type="submit" value="Login" class="btn btn-success btn-lg btn-block mt-4" />
+</form>
+
+<a class="btn btn-secondary btn-sm mb-3" href="{% url 'users:register' %}">Register</a>
+{% endblock %}

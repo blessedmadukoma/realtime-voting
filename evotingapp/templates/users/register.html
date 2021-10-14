@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+{% if error_message %}
+<p class="alert alert-danger">
+  <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+
+<h3>Register to Vote:</h3>
+
+<form action="{% url 'users:register' %}" method="post">
+  {%csrf_token%}
+  {{form|crispy}}
+  {{voterForm|crispy}}
+  <input type="submit" value="Register" class="btn btn-success btn-lg btn-block mt-4" />
+</form>
+
+<a class="btn btn-secondary btn-sm mb-3" href="{% url 'users:login' %}">Sign in</a>
+{% endblock %}

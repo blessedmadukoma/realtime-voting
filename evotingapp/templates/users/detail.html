@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load to_str %}
+{% block content %}
+<a class="btn btn-secondary btn-sm mb-3" href="{% url 'users:index' %}">Back To Polls</a>
+<h1 class="text-center mb-3">{{ question.question_text }}</h1>
+
+{% if error_message %}
+<p class="alert alert-danger">
+  <strong>{{ error_message }}</strong>
+</p>
+{% endif %}
+
+<form action="{% url 'users:vote' question.id %}" method="post">
+  {% csrf_token %}
+  {% for choice in question.choice_set.all %}
+  <div class="form-check">
+    <img src="{{choice.image.url}}" alt="{{choice.choice_text}}" width="200px" height="200px"><br>
+    <input type="radio" name="choice" class="form-check-input" id="choice{{ forloop.counter }}"
+      value="{{ choice.id }}" />
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+  </div>
+  {% endfor %}
+  {% if question.id|to_str in user.voter.json %}
+  <div>
+    <h5 style="color: green;">You Have Voted!! View Result Below</h5>
+  </div>
+  {% else %}
+  <input type="submit" value="Vote" class="btn btn-success btn-lg btn-block mt-4" />
+  {% endif %}
+  <a href="{% url 'users:results' question.id %}" class="btn btn-secondary btn-sm">Results</a>
+</form>
+{% endblock %}
